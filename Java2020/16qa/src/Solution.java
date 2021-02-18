@@ -1,0 +1,83 @@
+//Google Code Jam 2016 Qualification Round Problem A
+//Author: Casey Barton
+//Completed
+import java.math.BigInteger;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+
+public class Solution {
+    static boolean multiLineCases = false;
+    static int inputSize = 1000;
+    static String inputType = "int"; //"int" or "String"
+
+    public static void main(String[] args) {
+        int numCases;
+        Scanner scanner = new Scanner(System.in);
+        numCases = Integer.parseInt(scanner.nextLine());
+
+        for(int i = 1; i <= numCases; i++) {
+            String[][] input = new String[inputSize][inputSize];
+            if(multiLineCases) {
+                int numLines = Integer.parseInt(scanner.nextLine());
+                for (int j = 0; j < numLines; j++) {
+                    StringTokenizer st = new StringTokenizer(scanner.nextLine());
+                    int k = 0;
+                    while (st.hasMoreTokens()) {
+                        input[j][k] = st.nextToken();
+                        k++;
+                    }
+                }
+            }else{
+                StringTokenizer st = new StringTokenizer(scanner.nextLine());
+                int k = 0;
+                while (st.hasMoreTokens()) {
+                    input[0][k] = st.nextToken();
+                    k++;
+                }
+            }
+            System.out.printf("Case #%d: %s\n", i, solve(input));
+        }
+    }
+
+    static String solve(String[][] in){
+        int input = Integer.parseInt(in[0][0]);
+        //int[] input = new int[inputSize]; for (int i = 0; i < inputSize; i++) {input[i] = Integer.parseInt(in[0][i]);}
+        //int[][] input = new int[inputSize][inputSize]; for (int i = 0; i < inputSize; i++) {for (int j = 0; j < 1000; j++) {input[i][j] = Integer.parseInt(int[i][j]);}}
+        //String[] input = in[0];
+        //String[][] input = in;
+        String ret = "";
+        //code goes here
+        boolean[] foundDigits = new boolean[10];
+
+
+        BigInteger N = BigInteger.valueOf(input);
+        BigInteger inBig = N;
+
+        long start = System.currentTimeMillis();
+        int I = 1;
+        while(true){
+            I++;
+            if(I > 200){
+            //if(System.currentTimeMillis() - start > 1000){
+                return "INSOMNIA";
+            }
+            String inStr = inBig.toString();
+            char[] inCh = inStr.toCharArray();
+            for (int i = 0; i < inCh.length; i++) {
+                foundDigits[Integer.parseInt(""+inCh[i])] = true;
+            }
+            boolean allDigitsFound = true;
+            for (int i = 0; i < foundDigits.length; i++) {
+                if(foundDigits[i] == false){
+                    allDigitsFound = false;
+                }
+            }
+            if(allDigitsFound == true){
+                return inBig.toString();
+            }
+            inBig = N.multiply(BigInteger.valueOf(I));
+
+        }
+    }
+
+}
